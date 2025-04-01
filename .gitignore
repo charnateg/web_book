@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+books/node_modules
+=======
+node_modules
+data.sqlite
+.DS_Store
+dist
+*.db
+>>>>>>> 1981bf2e4ec7412d17e69cd94f5ddb22958b3a13
