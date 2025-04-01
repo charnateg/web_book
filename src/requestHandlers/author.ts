@@ -35,16 +35,27 @@ export async function get_all(req: Request, res: Response) {
 };
 
 export async function get_one(req: Request, res: Response) {
+  const includeBooks = req.query.include === 'books';
   const author = await prisma.author.findUnique({
     where: {
-      id: Number(req.params.author_id)
-    }
+      id: Number(req.params.author_id),
+    },
+    include: includeBooks
+      ? {
+          books: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+        }
+      : undefined,
   });
   if (!author) {
     throw new NotFoundError('Author not found');
   }
   res.json(author);
-};
+}
 
 export async function create_one(req: Request, res: Response) {
   assert(req.body, AuthorCreationData);

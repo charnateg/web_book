@@ -52,7 +52,8 @@ app.route('/authors/:author_id/books')
   .post(book.create_one_of_author);
 
 app.route('/books')
-  .get(book.get_all);
+  .get(book.get_all)
+  .post(book.create_one);
 
 app.route('/books/:book_id')
   .all(validateParams)

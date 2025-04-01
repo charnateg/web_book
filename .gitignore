@@ -7,3 +7,4 @@ data.sqlite
 dist
 *.db
 >>>>>>> 1981bf2e4ec7412d17e69cd94f5ddb22958b3a13
+!correction/prisma/dev.db

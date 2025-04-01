@@ -3,7 +3,8 @@ import { isInt } from 'validator';
 
 export const BookCreationData = object({
   title: size(string(), 1, 50),
-  publication_year: optional(integer())
+  publication_year: optional(integer()),
+  authorId: integer(), // Ajoutez ce champ pour connecter un auteur
 });
 
 export const BookUpdateData = object({

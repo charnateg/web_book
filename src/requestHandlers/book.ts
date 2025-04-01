@@ -34,14 +34,22 @@ export async function get_all(req: Request, res: Response) {
 export async function get_one(req: Request, res: Response) {
   const book = await prisma.book.findUnique({
     where: {
-      id: Number(req.params.book_id)
-    }
+      id: Number(req.params.book_id),
+    },
+    include: {
+      author: {
+        select: {
+          firstname: true,
+          lastname: true,
+        },
+      },
+    },
   });
   if (!book) {
     throw new NotFoundError('Book not found');
   }
   res.json(book);
-};
+}
 
 export async function get_all_of_author(req: Request, res: Response) {
   assert(req.query, BookGetAllQuery);
@@ -129,3 +137,26 @@ export async function delete_one(req: Request, res: Response) {
     throw err;
   }
 };
+
+export async function create_one(req: Request, res: Response) {
+  assert(req.body, BookCreationData); // Valide les données du corps de la requête
+  try {
+    const book = await prisma.book.create({
+      data: {
+        title: req.body.title,
+        publication_year: req.body.publication_year,
+        author: {
+          connect: {
+            id: req.body.authorId, // Connecte l'auteur via son ID
+          },
+        },
+      },
+    });
+    res.status(201).json(book); // Retourne le livre créé avec un statut 201
+  } catch (err: unknown) {
+    if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
+      throw new NotFoundError('Author not found');
+    }
+    throw err;
+  }
+}
