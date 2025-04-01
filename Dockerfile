@@ -22,6 +22,8 @@ RUN npx prisma generate
 # migrate the database
 RUN npx prisma migrate deploy
 
+RUN npm run seed
+
 # Expose the port your app runs on
 EXPOSE 3000
 
